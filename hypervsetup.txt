@@ -1,0 +1,38 @@
+On the Hyper-V server
+=======================
+1. Install Hyper-V Server 2016 (via GUI)
+2. Set password Note: change following in the terminal gui running sconfig3.
+3. Set computer name (e.g. server-1); note: do NOT use periods
+4. Configure remote management (disabled => enabled)
+5. Remote Desktop (disabled => enabled)
+6. In the Powershell window, run as admin
+
+Enable-PSRemoting
+Enable-WSManCredSSP -Role server
+
+7. Create a shared folder for iso uploads
+
+mkdir iso
+net share "iso=C:\Users\Administrator\iso" "/GRANT:EVERYONE,FULL"
+
+
+
+On the desktop/laptop you're going to manage Hyper-V remotely
+==============================================================
+Setup network as private
+1. Run –> secpol.msc
+2. Select Network List Manager Policies. This will list all the networks in the right hand pane.
+3. Double click your desired network, go to Network Location tab.
+4. Change the Network location type to either Not configured, private or public.
+
+Add a DNS entry in your hostfile (run notepad as Administrator)
+1. Edit "C:\Windows\System32\drivers\etc\hosts"
+2. Add an entry like "192.168.100.2 server-1"
+   
+In the Powershell window, run as admin:
+
+Enable-PSRemoting
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value server-1
+Enable-WSManCredSSP -Role client -DelegateComputer server-1
+Enable-WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V -All
+cmdkey /add:server-1 /user:Administrator /pass
