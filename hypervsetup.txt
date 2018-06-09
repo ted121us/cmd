@@ -32,7 +32,7 @@ Add a DNS entry in your hostfile (run notepad as Administrator)
 In the Powershell window, run as admin:
 
 Enable-PSRemoting
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value server-1
-Enable-WSManCredSSP -Role client -DelegateComputer server-1
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value server1
+Enable-WSManCredSSP -Role client -DelegateComputer server1
 Enable-WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V -All
-cmdkey /add:server-1 /user:Administrator /pass
+cmdkey /add:server1 /user:Administrator /pass
